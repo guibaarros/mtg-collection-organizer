@@ -34,6 +34,7 @@ sonarqube {
     property "sonar.projectKey", "guibaarros_mtg-collection-organizer"
     property "sonar.organization", "guibaarros"
     property "sonar.host.url", "https://sonarcloud.io"
+    property "sonar.exclusions", "src/main/java/com/mtgcollectionorganizer/api/MtgCollectionOrganizerApiModuleApplication.java"
   }
 }
 
