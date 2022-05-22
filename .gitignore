@@ -1,3 +1,6 @@
+.gradle/
+.idea/
+build/
 
 # Created by https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,intellij
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,visualstudiocode,intellij
