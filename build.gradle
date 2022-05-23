@@ -6,7 +6,6 @@ plugins {
 }
 
 group = 'com.mtgcollectionorganizer'
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
@@ -40,4 +39,8 @@ sonarqube {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+jar {
+	enabled = false
 }
