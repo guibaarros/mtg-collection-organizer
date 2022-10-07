@@ -4,7 +4,19 @@ import com.mtgcollectionorganizer.api.card.entity.CardEntity;
 import com.mtgcollectionorganizer.api.user.entity.UserEntity;
 import lombok.Getter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -53,9 +65,7 @@ public class UserCardEntity {
     @JoinColumn(name = "card_id", foreignKey = @ForeignKey(name = "fk_user_card_card_id"))
     private CardEntity card;// [ref:> cards.id]
 
-    @OneToMany(mappedBy = "userCard")
+    @OneToMany
+    @JoinColumn(name = "user_card_id", foreignKey = @ForeignKey(name = "user_card_tags_user_card_id"))
     private List<UserCardTagEntity> tags; // one to many
-
-    @ManyToMany(mappedBy = "cards")
-    private List<UserCollectionEntity> collections; //many to many
 }

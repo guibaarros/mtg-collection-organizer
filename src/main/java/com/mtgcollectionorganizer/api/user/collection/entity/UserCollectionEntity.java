@@ -3,7 +3,21 @@ package com.mtgcollectionorganizer.api.user.collection.entity;
 import com.mtgcollectionorganizer.api.user.entity.UserEntity;
 import lombok.Getter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,6 +47,10 @@ public class UserCollectionEntity {
     @ManyToOne
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "user_collection_user_id"))
     private UserEntity user;
+
+    @OneToMany
+    @JoinColumn(name = "user_collection_id", foreignKey = @ForeignKey(name = "user_collection_tags_user_card_id"))
+    private List<UserCollectionTagEntity> tags;
 
     @ManyToMany
     @JoinTable(

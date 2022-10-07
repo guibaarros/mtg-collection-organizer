@@ -2,7 +2,13 @@ package com.mtgcollectionorganizer.api.user.collection.entity;
 
 import lombok.Getter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Getter
 @Entity
@@ -18,7 +24,7 @@ public class UserCardTagEntity {
     @Column(name = "name")
     private String name;// varchar
 
-    @ManyToOne
-    @JoinColumn(name = "user_card_id", foreignKey = @ForeignKey(name = "user_card_tags_user_card_id"))
-    private UserCardEntity userCard;// varchar [ref:> user_cards.id]
+//    @ManyToOne
+//    @JoinColumn(name = "user_card_id", foreignKey = @ForeignKey(name = "user_card_tags_user_card_id"))
+//    private UserCardEntity userCard;// varchar [ref:> user_cards.id]
 }

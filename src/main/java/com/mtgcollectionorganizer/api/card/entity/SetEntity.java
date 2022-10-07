@@ -2,8 +2,13 @@ package com.mtgcollectionorganizer.api.card.entity;
 
 import lombok.Getter;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Getter
 @Entity
@@ -37,6 +42,4 @@ public class SetEntity {
     @Column(name="scryfall_response")
     private String scryfallResponse;
 
-    @OneToMany(mappedBy = "set")
-    private List<CardEntity> cards;
 }
