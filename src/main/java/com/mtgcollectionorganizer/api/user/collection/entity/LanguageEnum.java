@@ -6,7 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum LanguageEnum {
     EN("English"),
-    PT_BR("Português");
+    PT("Português");
 
     @Getter
     private final String name;

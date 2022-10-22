@@ -1,31 +1,32 @@
-package com.mtgcollectionorganizer.api.card.entity;
+package com.mtgcollectionorganizer.api.card.set.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Getter
 @Entity
 @Table(name = "sets")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SetEntity {
 
     @Id
-    @SequenceGenerator(name = "sets_id_seq", sequenceName = "sets_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sets_id_seq")
     @Column(name="id", updatable = false)
     private String id;
 
     @Column(name="name")
-    private String name; //varchar
+    private String name;
 
     @Column(name="localized_name")
-    private String localizedName; //varchar
+    private String localizedName;
 
     @Column(name="code", unique = true)
     private String code;
@@ -38,8 +39,4 @@ public class SetEntity {
 
     @Column(name="card_count")
     private Integer cardCount;
-
-    @Column(name="scryfall_response")
-    private String scryfallResponse;
-
 }

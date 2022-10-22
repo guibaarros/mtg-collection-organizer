@@ -1,6 +1,12 @@
 package com.mtgcollectionorganizer.api.card.entity;
 
+import com.mtgcollectionorganizer.api.card.set.entity.SetEntity;
+import com.mtgcollectionorganizer.api.card.subtype.entity.SubtypeEntity;
+import com.mtgcollectionorganizer.api.card.type.entity.TypeEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,6 +25,9 @@ import java.util.List;
 @Entity
 @Table(name = "cards")
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CardEntity {
 
     @Id
@@ -38,16 +47,16 @@ public class CardEntity {
     @Column(name = "printed_name")
     private String printedName;// varchar
 
-    @Column(name = "card_text")
+    @Column(name = "card_text", length = 4096)
     private String cardText;// varchar
 
-    @Column(name = "printed_text")
+    @Column(name = "printed_text", length = 4096)
     private String printedText;// varchar
 
-    @Column(name = "scryfall_uri")
+    @Column(name = "scryfall_uri", length = 1024)
     private String scryfallUri;// varchar
 
-    @Column(name = "images_uri")
+    @Column(name = "images_uri", length = 1024)
     private String imageUris;// varchar
 
     @Column(name = "mana_cost")
@@ -60,11 +69,8 @@ public class CardEntity {
     @Enumerated(EnumType.STRING)
     private RarityEnum rarity; //varchar
 
-    @Column(name = "gatherer_uri")
+    @Column(name = "gatherer_uri", length = 1024)
     private String gathererUri; //varchar
-
-    @Column(name = "scryfall_response")
-    private String scryfallResponse; //varchar
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
