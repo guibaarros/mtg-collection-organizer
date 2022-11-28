@@ -1,6 +1,7 @@
 package com.mtgcollectionorganizer.api.card.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.mtgcollectionorganizer.api.card.builder.CardEntityBuilder;
 import com.mtgcollectionorganizer.api.card.entity.CardEntity;
 import com.mtgcollectionorganizer.api.card.repository.CardEntityRepository;
 import com.mtgcollectionorganizer.api.scryfall.card.dto.ScryfallCardDTO;
@@ -18,12 +19,11 @@ public class CardService {
     private final CardEntityRepository cardEntityRepository;
     private final ScryfallCardService scryfallCardService;
 
-    private final CardBuilder cardBuilder;
+    private final CardEntityBuilder cardEntityBuilder;
     public CardEntity getBySetCodeAndCollectorNumber(final String setCode, final Integer collectorNumber) {
         final var optionalCardEntity = cardEntityRepository.findBySetCodeAndCollectorNumber(setCode, collectorNumber);
         return optionalCardEntity.orElseGet(() -> {
             try {
-                System.out.println("vai bater no scryfall");
                 return buildCardEntityByScryfallData(setCode, collectorNumber);
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
@@ -39,7 +39,7 @@ public class CardService {
                         LanguageEnum.PT.name().toLowerCase(Locale.ROOT)
                 );
 
-        final CardEntity cardEntity = cardBuilder.build(cardDTO, setCode);
+        final CardEntity cardEntity = cardEntityBuilder.build(cardDTO, setCode);
         cardEntityRepository.save(cardEntity);
 
         return cardEntity;

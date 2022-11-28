@@ -5,8 +5,11 @@ import com.mtgcollectionorganizer.api.card.subtype.entity.SubtypeEntity;
 import com.mtgcollectionorganizer.api.card.type.entity.TypeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,6 +31,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode
 public class CardEntity {
 
     @Id
@@ -72,6 +76,12 @@ public class CardEntity {
     @Column(name = "gatherer_uri", length = 1024)
     private String gathererUri; //varchar
 
+    @Column(name = "colors", length = 1024)
+    private String colors;
+
+    @Column(name = "color_identity", length = 1024)
+    private String colorIdentity;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "card_types",
@@ -87,4 +97,9 @@ public class CardEntity {
             inverseJoinColumns = @JoinColumn(name = "subtype_id", foreignKey = @ForeignKey(name = "fk_card_subtypes_subtype_id"))
     )
     private List<SubtypeEntity> subtypes;//many to many
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+    }
 }

@@ -5,7 +5,7 @@ import com.mtgcollectionorganizer.api.scryfall.set.dto.ScryfallSetDTO;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SetBuilder {
+public class SetEntityBuilder {
     public SetEntity build(final ScryfallSetDTO setDTO) {
         return SetEntity.builder()
                 .id(setDTO.getId())

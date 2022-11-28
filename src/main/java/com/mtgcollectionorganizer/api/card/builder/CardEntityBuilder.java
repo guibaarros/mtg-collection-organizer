@@ -1,4 +1,4 @@
-package com.mtgcollectionorganizer.api.card.service;
+package com.mtgcollectionorganizer.api.card.builder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,10 +12,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
-public class CardBuilder {
+public class CardEntityBuilder {
 
     private final SetService setService;
     private final ObjectMapper objectMapper;
@@ -28,7 +29,7 @@ public class CardBuilder {
                 .set(setService.getSetByCode(setCode))
                 .collectorNumber(Integer.parseInt(cardDTO.getCollectorNumber()))
                 .cardName(cardDTO.getName())
-                .printedName(cardDTO.getPrintedName())
+                .printedName(Objects.nonNull(cardDTO.getPrintedName()) ? cardDTO.getPrintedName() : cardDTO.getName())
                 .cardText(cardDTO.getOracleText())
                 .printedText(cardDTO.getPrintedText())
                 .scryfallUri(cardDTO.getScryfallUri())
@@ -39,15 +40,25 @@ public class CardBuilder {
                 .gathererUri(cardDTO.getRelatedUris().get("gatherer"))
                 .types(typeService.getTypesFromCardDTOTypeLine(cardDTO.getTypeLine()))
                 .subtypes(subtypeService.getSubtypesFromCardDTOTypeLine(cardDTO.getTypeLine()))
+                .colors(getReplacedColors(cardDTO.getColors().toString()))
+                .colorIdentity(getReplacedColors(cardDTO.getColorIdentity().toString()))
                 .build();
     }
 
-    private String getImageUris(ScryfallCardDTO cardDTO) {
+    private String getImageUris(final ScryfallCardDTO cardDTO) {
         try {
             return objectMapper.writeValueAsString(cardDTO.getImageUris());
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return "";
+    }
+
+    private String getReplacedColors(final String color){
+        return color
+                .replace(",", "")
+                .replace(" ", "")
+                .replace("[", "")
+                .replace("]", "");
     }
 }
