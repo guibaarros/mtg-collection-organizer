@@ -19,21 +19,20 @@ public class CardService {
     private final ScryfallCardService scryfallCardService;
     private final CardEntityBuilder cardEntityBuilder;
 
-    //TODO add language parameter
-    public CardEntity getBySetCodeAndCollectorNumber(final String setCode, final Integer collectorNumber) {
-        final var optionalCardEntity = cardEntityRepository.findBySetCodeAndCollectorNumber(setCode, collectorNumber);
-        return optionalCardEntity.orElseGet(() -> buildCardEntityByScryfallData(setCode, collectorNumber));
+    public CardEntity getBySetCodeAndCollectorNumber(final String setCode, final Integer collectorNumber, final LanguageEnum language) {
+        final var optionalCardEntity = cardEntityRepository.findBySetCodeAndCollectorNumber(setCode, collectorNumber, language);
+        return optionalCardEntity.orElseGet(() -> buildCardEntityByScryfallData(setCode, collectorNumber, language));
     }
 
-    private CardEntity buildCardEntityByScryfallData(final String setCode, final Integer collectorNumber) {
+    private CardEntity buildCardEntityByScryfallData(final String setCode, final Integer collectorNumber, final LanguageEnum language) {
         final ScryfallCardDTO cardDTO = scryfallCardService
                 .getCardBySetCodeAndCollectorNumber(
                         setCode,
                         collectorNumber,
-                        LanguageEnum.PT.name().toLowerCase(Locale.ROOT)
+                        language.name().toLowerCase(Locale.ROOT)
                 );
 
-        final CardEntity cardEntity = cardEntityBuilder.build(cardDTO, setCode);
+        final CardEntity cardEntity = cardEntityBuilder.build(cardDTO, setCode, language);
         cardEntityRepository.save(cardEntity);
 
         return cardEntity;

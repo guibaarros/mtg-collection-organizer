@@ -11,6 +11,7 @@ import com.mtgcollectionorganizer.api.card.subtype.service.SubtypeService;
 import com.mtgcollectionorganizer.api.card.type.entity.TypeEntity;
 import com.mtgcollectionorganizer.api.card.type.service.TypeService;
 import com.mtgcollectionorganizer.api.scryfall.card.dto.ScryfallCardDTO;
+import com.mtgcollectionorganizer.api.user.collection.entity.LanguageEnum;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,6 +52,7 @@ public class CardEntityBuilderTest {
     @DisplayName("Test CardEntityBuilder.build()")
     void testBuild() throws JsonProcessingException {
         final String setCode = "vow";
+        final LanguageEnum language = LanguageEnum.EN;
         final SetEntity expectedSetEntity = SetEntity
                 .builder()
                 .id("8144b676-569f-4716-8005-bc8f0778f3fa")
@@ -142,6 +144,7 @@ public class CardEntityBuilderTest {
                 .subtypes(expectedSubtypeEntityList)
                 .colors("R")
                 .colorIdentity("R")
+                .language(language)
                 .build();
 
         when(setService.getSetByCode(eq(setCode))).thenReturn(expectedSetEntity);
@@ -149,7 +152,7 @@ public class CardEntityBuilderTest {
         when(subtypeService.getSubtypesFromCardDTOTypeLine(eq(cardDTO.getTypeLine()))).thenReturn(expectedSubtypeEntityList);
         when(objectMapper.writeValueAsString(eq(cardDTO.getImageUris()))).thenReturn(expectedImageUris);
 
-        final CardEntity actualCardEntity = cardEntityBuilder.build(cardDTO, setCode);
+        final CardEntity actualCardEntity = cardEntityBuilder.build(cardDTO, setCode, language);
 
         Assertions.assertEquals(expectedCardEntity, actualCardEntity);
         verify(setService, times(1)).getSetByCode(eq(setCode));

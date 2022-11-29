@@ -50,6 +50,7 @@ public class CardServiceTest {
     void testGetBySetCodeAndCollectorNumber(){
         final String setCode = "vow";
         final Integer collectorNumber = 149;
+        final LanguageEnum language = LanguageEnum.EN;
 
         final SetEntity expectedSetEntity = SetEntity
                 .builder()
@@ -142,28 +143,29 @@ public class CardServiceTest {
                 .subtypes(expectedSubtypeEntityList)
                 .colors("R")
                 .colorIdentity("R")
+                .language(language)
                 .build();
 
-        when(cardEntityRepository.findBySetCodeAndCollectorNumber(eq(setCode), eq(collectorNumber))).thenReturn(Optional.empty());
+        when(cardEntityRepository.findBySetCodeAndCollectorNumber(eq(setCode), eq(collectorNumber), eq(language))).thenReturn(Optional.empty());
         when(scryfallCardService.getCardBySetCodeAndCollectorNumber(
                 eq(setCode),
                 eq(collectorNumber),
-                eq(LanguageEnum.PT.name().toLowerCase(Locale.ROOT))
+                eq(language.name().toLowerCase(Locale.ROOT))
         )).thenReturn(cardDTO);
-        when(cardEntityBuilder.build(eq(cardDTO), eq(setCode))).thenReturn(expectedCardEntity);
+        when(cardEntityBuilder.build(eq(cardDTO), eq(setCode), eq(language))).thenReturn(expectedCardEntity);
         when(cardEntityRepository.save(eq(expectedCardEntity))).thenReturn(expectedCardEntity);
 
-        final CardEntity actualCardEntity = cardService.getBySetCodeAndCollectorNumber(setCode, collectorNumber);
+        final CardEntity actualCardEntity = cardService.getBySetCodeAndCollectorNumber(setCode, collectorNumber, language);
 
         Assertions.assertEquals(expectedCardEntity, actualCardEntity);
 
-        verify(cardEntityRepository, times(1)).findBySetCodeAndCollectorNumber(eq(setCode), eq(collectorNumber));
+        verify(cardEntityRepository, times(1)).findBySetCodeAndCollectorNumber(eq(setCode), eq(collectorNumber), eq(language));
         verify(scryfallCardService, times(1)).getCardBySetCodeAndCollectorNumber(
                 eq(setCode),
                 eq(collectorNumber),
-                eq(LanguageEnum.PT.name().toLowerCase(Locale.ROOT))
+                eq(language.name().toLowerCase(Locale.ROOT))
         );
-        verify(cardEntityBuilder, times(1)).build(eq(cardDTO), eq(setCode));
+        verify(cardEntityBuilder, times(1)).build(eq(cardDTO), eq(setCode), eq(language));
         verify(cardEntityRepository, times(1)).save(eq(expectedCardEntity));
     }
 }

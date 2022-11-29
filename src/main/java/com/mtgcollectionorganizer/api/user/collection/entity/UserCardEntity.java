@@ -41,10 +41,6 @@ public class UserCardEntity {
     @Enumerated(EnumType.STRING)
     private StateEnum state;// varchar
 
-    @Column(name = "language")
-    @Enumerated(EnumType.STRING)
-    private LanguageEnum language;// varchar
-
     @Column(name = "extras")
     private String extras;// varchar
 

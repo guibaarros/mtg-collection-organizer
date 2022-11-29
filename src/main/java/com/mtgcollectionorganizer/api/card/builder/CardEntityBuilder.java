@@ -8,6 +8,7 @@ import com.mtgcollectionorganizer.api.card.set.service.SetService;
 import com.mtgcollectionorganizer.api.card.subtype.service.SubtypeService;
 import com.mtgcollectionorganizer.api.card.type.service.TypeService;
 import com.mtgcollectionorganizer.api.scryfall.card.dto.ScryfallCardDTO;
+import com.mtgcollectionorganizer.api.user.collection.entity.LanguageEnum;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class CardEntityBuilder {
     private final TypeService typeService;
     private final SubtypeService subtypeService;
 
-    public CardEntity build(final ScryfallCardDTO cardDTO, final String setCode) {
+    public CardEntity build(final ScryfallCardDTO cardDTO, final String setCode, final LanguageEnum language) {
         return CardEntity.builder()
                 .id(cardDTO.getId())
                 .set(setService.getSetByCode(setCode))
@@ -42,6 +43,7 @@ public class CardEntityBuilder {
                 .subtypes(subtypeService.getSubtypesFromCardDTOTypeLine(cardDTO.getTypeLine()))
                 .colors(getReplacedColors(cardDTO.getColors().toString()))
                 .colorIdentity(getReplacedColors(cardDTO.getColorIdentity().toString()))
+                .language(language)
                 .build();
     }
 

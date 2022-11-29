@@ -3,6 +3,7 @@ package com.mtgcollectionorganizer.api.card.entity;
 import com.mtgcollectionorganizer.api.card.set.entity.SetEntity;
 import com.mtgcollectionorganizer.api.card.subtype.entity.SubtypeEntity;
 import com.mtgcollectionorganizer.api.card.type.entity.TypeEntity;
+import com.mtgcollectionorganizer.api.user.collection.entity.LanguageEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -81,6 +82,10 @@ public class CardEntity {
 
     @Column(name = "color_identity", length = 1024)
     private String colorIdentity;
+
+    @Column(name = "language")
+    @Enumerated(EnumType.STRING)
+    private LanguageEnum language;// varchar
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
