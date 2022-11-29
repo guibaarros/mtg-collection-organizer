@@ -1,6 +1,5 @@
 package com.mtgcollectionorganizer.api.card.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mtgcollectionorganizer.api.card.builder.CardEntityBuilder;
 import com.mtgcollectionorganizer.api.card.entity.CardEntity;
 import com.mtgcollectionorganizer.api.card.repository.CardEntityRepository;
@@ -18,20 +17,15 @@ public class CardService {
 
     private final CardEntityRepository cardEntityRepository;
     private final ScryfallCardService scryfallCardService;
-
     private final CardEntityBuilder cardEntityBuilder;
+
+    //TODO add language parameter
     public CardEntity getBySetCodeAndCollectorNumber(final String setCode, final Integer collectorNumber) {
         final var optionalCardEntity = cardEntityRepository.findBySetCodeAndCollectorNumber(setCode, collectorNumber);
-        return optionalCardEntity.orElseGet(() -> {
-            try {
-                return buildCardEntityByScryfallData(setCode, collectorNumber);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        return optionalCardEntity.orElseGet(() -> buildCardEntityByScryfallData(setCode, collectorNumber));
     }
 
-    private CardEntity buildCardEntityByScryfallData(final String setCode, final Integer collectorNumber) throws JsonProcessingException {
+    private CardEntity buildCardEntityByScryfallData(final String setCode, final Integer collectorNumber) {
         final ScryfallCardDTO cardDTO = scryfallCardService
                 .getCardBySetCodeAndCollectorNumber(
                         setCode,
