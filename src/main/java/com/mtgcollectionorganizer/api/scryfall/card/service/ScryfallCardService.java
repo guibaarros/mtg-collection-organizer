@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 public class ScryfallCardService {
 
     private final ScryfallCardClient cardClient;
-    public ScryfallCardDTO getCardBySetCodeAndCollectorNumber(final String setCode, final Integer collectorNumber, final String language){
+
+    public ScryfallCardDTO getCardBySetCodeAndCollectorNumber(final String setCode, final Integer collectorNumber, final String language) {
         return cardClient.getCardBySetCodeAndCollectorNumber(setCode, collectorNumber, language);
     }
 }
