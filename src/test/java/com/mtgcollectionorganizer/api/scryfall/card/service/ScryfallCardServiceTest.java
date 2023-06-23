@@ -76,4 +76,6 @@ public class ScryfallCardServiceTest {
 
         Assertions.assertEquals(expectedScryfallCardDTO, actualCardBySetCodeAndCollectorNumber);
     }
+
+    //TODO adicionar cenario de card nao encontrado no scryfall
 }
