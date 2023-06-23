@@ -1,4 +1,4 @@
-package com.mtgcollectionorganizer.api.controller;
+package com.mtgcollectionorganizer.api.card.controller;
 
 import com.mtgcollectionorganizer.api.card.entity.CardEntity;
 import com.mtgcollectionorganizer.api.card.service.CardService;
