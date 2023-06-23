@@ -2,6 +2,7 @@ package com.mtgcollectionorganizer.api.user.entity;
 
 import lombok.Getter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -32,7 +33,7 @@ public class RoleEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;// datetime
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "role_id", foreignKey = @ForeignKey(name = "fk_user_roles_role_id")),

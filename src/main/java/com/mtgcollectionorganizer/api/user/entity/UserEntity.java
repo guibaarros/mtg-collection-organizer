@@ -1,7 +1,11 @@
 package com.mtgcollectionorganizer.api.user.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,6 +20,9 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "users")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity {
 
     @Id
@@ -40,7 +47,7 @@ public class UserEntity {
     @ManyToMany(mappedBy = "users")
     private List<RoleEntity> roles; //many to many
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserPasswordEntity> passwords;
 
     @PrePersist
