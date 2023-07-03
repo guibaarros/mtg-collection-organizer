@@ -32,7 +32,7 @@ public class CardEntityBuilder {
                 .cardName(cardDTO.getName())
                 .printedName(Objects.nonNull(cardDTO.getPrintedName()) ? cardDTO.getPrintedName() : cardDTO.getName())
                 .cardText(cardDTO.getOracleText())
-                .printedText(cardDTO.getPrintedText())
+                .printedText(Objects.nonNull(cardDTO.getPrintedText()) ? cardDTO.getPrintedText() : cardDTO.getOracleText())
                 .scryfallUri(cardDTO.getScryfallUri())
                 .imageUris(getImageUris(cardDTO))
                 .manaCost(cardDTO.getManaCost())
@@ -56,7 +56,7 @@ public class CardEntityBuilder {
         return "";
     }
 
-    private String getReplacedColors(final String color){
+    private String getReplacedColors(final String color) {
         return color
                 .replace(",", "")
                 .replace(" ", "")

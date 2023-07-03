@@ -23,14 +23,14 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createUser(@RequestBody final UserDTO userDto){
-        userService.addUser(userDto);
+    public String createUser(@RequestBody final UserDTO userDto){
+        return userService.addUser(userDto);
     }
 
     @PatchMapping("/{user_id}/")
     @ResponseStatus(HttpStatus.CREATED)
     public void changePassword(@RequestBody final UserPasswordDTO userPasswordDto,
-                               @PathVariable("user_id") final String userId
+                               @PathVariable("user_id") final String userId //TODO receber de outra forma
                                )
     {
         userService.changePassword(userId, userPasswordDto);

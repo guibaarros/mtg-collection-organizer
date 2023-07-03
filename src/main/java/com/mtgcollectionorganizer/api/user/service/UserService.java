@@ -33,13 +33,14 @@ public class UserService {
     }
 
     @Transactional
-    public void addUser(final UserDTO userDto) {
+    public String addUser(final UserDTO userDto) {
         validateUserAlreadyExists(userDto);
         final UserPasswordEntity userPassword = userPasswordBuilder.build(
                 userDto.getPassword(),
                 userDto.getUserName(),
                 userBuilder.buildFromDTO(userDto));
-        userPasswordRepository.save(userPassword);
+        final UserPasswordEntity persistedUser = userPasswordRepository.save(userPassword);
+        return persistedUser.getUser().getId();
     }
 
     private void validateUserAlreadyExists(final UserDTO userDto) {
@@ -63,7 +64,11 @@ public class UserService {
     }
 
     public UserEntity getByUserName(final String userName) {
-        return findUserByUserName(userName).orElseThrow(() -> new UserNotFoundException(userName));
+        return findUserByUserName(userName).orElseThrow(() -> new UserNotFoundException("userName", userName));
+    }
+
+    public UserEntity getById(final String userId) {
+        return findById(userId).orElseThrow(() -> new UserNotFoundException("id", userId));
     }
 
     public Boolean login(final String username, final String password) {
@@ -79,5 +84,9 @@ public class UserService {
 
     private Optional<UserPasswordEntity> findUserPasswordByUserId(final String userId) {
         return userPasswordRepository.findByUserIdAndIsActive(userId);
+    }
+
+    private Optional<UserEntity> findById(final String userId) {
+        return userRepository.findById(userId);
     }
 }
