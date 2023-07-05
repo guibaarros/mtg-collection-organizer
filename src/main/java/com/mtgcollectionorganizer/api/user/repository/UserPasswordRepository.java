@@ -27,4 +27,11 @@ public interface UserPasswordRepository extends CrudRepository<UserPasswordEntit
     Optional<UserPasswordEntity> findByUserNameAndPasswordAndIsActive(
             @Param("userName") final String username,
             @Param("password") final String password);
+
+    @Query(
+            value = "SELECT u FROM UserPasswordEntity u " +
+                    "WHERE u.user.userName = :userName " +
+                    "AND u.active = true "
+    )
+    Optional<UserPasswordEntity> findByUserNameAndIsActive(@Param("userName") final String userName);
 }

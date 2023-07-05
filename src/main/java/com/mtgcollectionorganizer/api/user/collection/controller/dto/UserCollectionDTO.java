@@ -13,7 +13,6 @@ public class UserCollectionDTO {
     private String id;
     private String name;
     private String description;
-    private String userName; //TODO ajustar pra usar a autenticacao
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 //    private List<String> tags;

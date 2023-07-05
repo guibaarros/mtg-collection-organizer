@@ -5,6 +5,7 @@ import com.mtgcollectionorganizer.api.card.service.CardService;
 import com.mtgcollectionorganizer.api.user.collection.controller.dto.UserCardDTO;
 import com.mtgcollectionorganizer.api.user.collection.entity.StateEnum;
 import com.mtgcollectionorganizer.api.user.collection.entity.UserCardEntity;
+import com.mtgcollectionorganizer.api.user.collection.exception.UserCardNotFoundException;
 import com.mtgcollectionorganizer.api.user.entity.UserEntity;
 import com.mtgcollectionorganizer.api.user.repository.UserCardRepository;
 import com.mtgcollectionorganizer.api.user.service.UserService;
@@ -21,8 +22,8 @@ public class UserCardService {
     private final CardService cardService;
     private final UserService userService;
 
-    public String addCard(final UserCardDTO userCardDTO, final String userId) {
-        final UserEntity userEntity = userService.getById(userId);
+    public String addCard(final UserCardDTO userCardDTO, final String username) {
+        final UserEntity userEntity = userService.getUserByUsername(username);
         final UserCardEntity userCardEntity = buildFromDTO(userCardDTO, userEntity);
 
         final Optional<UserCardEntity> userCardEntityByUniqueKey = getUserCardEntityByUniqueKey(
@@ -71,5 +72,9 @@ public class UserCardService {
                 .card(cardEntity)
 //                .tags() // TODO adicionar tags
                 .build();
+    }
+
+    public UserCardEntity findById(final String id) {
+        return userCardRepository.findById(id).orElseThrow(() -> new UserCardNotFoundException(id));
     }
 }

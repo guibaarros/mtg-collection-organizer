@@ -1,6 +1,5 @@
 package com.mtgcollectionorganizer.api.user.service;
 
-import com.mtgcollectionorganizer.api.tools.HashTool;
 import com.mtgcollectionorganizer.api.user.builder.UserBuilder;
 import com.mtgcollectionorganizer.api.user.builder.UserPasswordBuilder;
 import com.mtgcollectionorganizer.api.user.controller.dto.UserDTO;
@@ -50,43 +49,32 @@ public class UserService {
     }
 
     @Transactional
-    public void changePassword(final String userId, final UserPasswordDTO userPasswordDto) {
-        final UserPasswordEntity userPassword = findUserPasswordByUserId(userId)
-                .orElseThrow(() -> new UserPasswordNotFoundException(userId));
+    public void changePassword(final String username, final UserPasswordDTO userPasswordDto) {
+        final UserPasswordEntity userPassword = findUserPasswordByUserName(username)
+                .orElseThrow(() -> new UserPasswordNotFoundException(username));
         userPassword.disable();
         userPasswordRepository.save(userPassword);
 
         final UserPasswordEntity newUserPassword =userPasswordBuilder.build(
                 userPasswordDto.getPassword(),
-                userPassword.getUser().getUserName(),
+                username,
                 userPassword.getUser());
         userPasswordRepository.save(newUserPassword);
     }
 
-    public UserEntity getByUserName(final String userName) {
-        return findUserByUserName(userName).orElseThrow(() -> new UserNotFoundException("userName", userName));
+    public UserPasswordEntity getUserPasswordByUserName(final String userName) {
+        return findUserPasswordByUserName(userName).orElseThrow(() -> new UserNotFoundException("userName", userName));
     }
 
-    public UserEntity getById(final String userId) {
-        return findById(userId).orElseThrow(() -> new UserNotFoundException("id", userId));
-    }
-
-    public Boolean login(final String username, final String password) {
-        return userPasswordRepository.findByUserNameAndPasswordAndIsActive(
-                username,
-                HashTool.hashSHA256(username.concat(password))
-        ).isPresent();
+    public UserEntity getUserByUsername(final String username) {
+        return findUserByUserName(username).orElseThrow(() -> new UserNotFoundException("username", username));
     }
 
     private Optional<UserEntity> findUserByUserName(final String userName) {
         return userRepository.findByUserName(userName);
     }
 
-    private Optional<UserPasswordEntity> findUserPasswordByUserId(final String userId) {
-        return userPasswordRepository.findByUserIdAndIsActive(userId);
-    }
-
-    private Optional<UserEntity> findById(final String userId) {
-        return userRepository.findById(userId);
+    private Optional<UserPasswordEntity> findUserPasswordByUserName(final String userName) {
+        return userPasswordRepository.findByUserNameAndIsActive(userName);
     }
 }

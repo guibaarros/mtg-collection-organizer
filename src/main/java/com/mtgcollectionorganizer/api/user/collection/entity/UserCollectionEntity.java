@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -53,7 +54,7 @@ public class UserCollectionEntity {
     @JoinColumn(name = "user_collection_id", foreignKey = @ForeignKey(name = "user_collection_tags_user_card_id"))
     private List<UserCollectionTagEntity> tags;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_collection_cards",
             joinColumns = @JoinColumn(name = "user_collection_id", foreignKey = @ForeignKey(name = "fk_user_collection_cards_user_collection_id")),
