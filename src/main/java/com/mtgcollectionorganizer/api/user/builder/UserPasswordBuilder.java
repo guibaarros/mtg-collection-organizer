@@ -14,10 +14,10 @@ public class UserPasswordBuilder {
 
     private final PasswordEncoder passwordEncoder;
 
-    public UserPasswordEntity build(final String password, final String username, final UserEntity userEntity) {
+    public UserPasswordEntity build(final String password, final UserEntity userEntity) {
         return UserPasswordEntity.builder()
                 .id(UUID.randomUUID().toString())
-                .encryptedPassword(passwordEncoder.encode(username.concat(password)))
+                .encryptedPassword(passwordEncoder.encode(password))
                 .user(userEntity)
                 .active(Boolean.TRUE)
                 .build();

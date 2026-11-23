@@ -36,7 +36,6 @@ public class UserService {
         validateUserAlreadyExists(userDto);
         final UserPasswordEntity userPassword = userPasswordBuilder.build(
                 userDto.getPassword(),
-                userDto.getUserName(),
                 userBuilder.buildFromDTO(userDto));
         final UserPasswordEntity persistedUser = userPasswordRepository.save(userPassword);
         return persistedUser.getUser().getId();
@@ -55,9 +54,8 @@ public class UserService {
         userPassword.disable();
         userPasswordRepository.save(userPassword);
 
-        final UserPasswordEntity newUserPassword =userPasswordBuilder.build(
+        final UserPasswordEntity newUserPassword = userPasswordBuilder.build(
                 userPasswordDto.getPassword(),
-                username,
                 userPassword.getUser());
         userPasswordRepository.save(newUserPassword);
     }

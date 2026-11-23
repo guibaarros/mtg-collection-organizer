@@ -60,7 +60,7 @@ class UserServiceTest {
         when(dto.getPassword()).thenReturn("senha123");
         when(userRepository.findByUserName("guilherme")).thenReturn(Optional.empty());
         when(userBuilder.buildFromDTO(dto)).thenReturn(user);
-        when(userPasswordBuilder.build("senha123", "guilherme", user)).thenReturn(userPassword);
+        when(userPasswordBuilder.build("senha123", user)).thenReturn(userPassword);
         when(userPasswordRepository.save(userPassword)).thenReturn(userPassword);
 
         assertEquals("user-id", userService.addUser(dto));
@@ -99,7 +99,7 @@ class UserServiceTest {
         when(userPasswordRepository.findByUserNameAndIsActive("guilherme"))
                 .thenReturn(Optional.of(oldPassword));
         when(newPasswordDto.getPassword()).thenReturn("nova");
-        when(userPasswordBuilder.build("nova", "guilherme", user)).thenReturn(newPassword);
+        when(userPasswordBuilder.build("nova", user)).thenReturn(newPassword);
 
         userService.changePassword("guilherme", newPasswordDto);
 
