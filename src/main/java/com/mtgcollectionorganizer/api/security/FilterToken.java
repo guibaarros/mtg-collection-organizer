@@ -1,6 +1,6 @@
 package com.mtgcollectionorganizer.api.security;
 
-import com.google.common.base.Strings;
+import org.springframework.util.StringUtils;
 import com.mtgcollectionorganizer.api.user.entity.UserPasswordEntity;
 import com.mtgcollectionorganizer.api.user.exception.UserNotFoundException;
 import com.mtgcollectionorganizer.api.user.repository.UserPasswordRepository;
@@ -30,7 +30,7 @@ public class FilterToken extends OncePerRequestFilter {
 
         final String authorizationHeader = request.getHeader("Authorization");
 
-        if (!Strings.isNullOrEmpty(authorizationHeader)) {
+        if (StringUtils.hasLength(authorizationHeader)) {
             final String token = authorizationHeader.replace("Bearer ", "");
             final String subject = tokenService.getSubject(token);
             final UserPasswordEntity user = userRepository

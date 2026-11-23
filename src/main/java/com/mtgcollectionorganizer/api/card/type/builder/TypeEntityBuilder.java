@@ -1,6 +1,6 @@
 package com.mtgcollectionorganizer.api.card.type.builder;
 
-import com.google.common.base.Strings;
+import org.springframework.util.StringUtils;
 import com.mtgcollectionorganizer.api.card.type.builder.exception.InvalidTypeNameException;
 import com.mtgcollectionorganizer.api.card.type.entity.TypeEntity;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import java.util.UUID;
 public class TypeEntityBuilder {
 
     public TypeEntity build(final String name){
-        if (Strings.isNullOrEmpty(name)){
+        if (!StringUtils.hasLength(name)){
             throw new InvalidTypeNameException("name can not be null or empty");
         }
         return TypeEntity.builder()

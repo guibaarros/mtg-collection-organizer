@@ -1,6 +1,6 @@
 package com.mtgcollectionorganizer.api.card.type.service;
 
-import com.google.common.base.Strings;
+import org.springframework.util.StringUtils;
 import com.mtgcollectionorganizer.api.card.type.builder.TypeEntityBuilder;
 import com.mtgcollectionorganizer.api.card.type.entity.TypeEntity;
 import com.mtgcollectionorganizer.api.card.type.repository.TypeEntityRepository;
@@ -20,7 +20,7 @@ public class TypeService {
     public List<TypeEntity> getTypesFromCardDTOTypeLine(final String typeLine) {
         final List<TypeEntity> typeList = new ArrayList<>();
 
-        if (!Strings.isNullOrEmpty(typeLine)){
+        if (StringUtils.hasLength(typeLine)){
             final String[] split = typeLine.split("—");
 
             if (split.length > 0){

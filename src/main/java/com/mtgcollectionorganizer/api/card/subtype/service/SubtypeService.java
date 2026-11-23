@@ -1,6 +1,6 @@
 package com.mtgcollectionorganizer.api.card.subtype.service;
 
-import com.google.common.base.Strings;
+import org.springframework.util.StringUtils;
 import com.mtgcollectionorganizer.api.card.subtype.builder.SubtypeEntityBuilder;
 import com.mtgcollectionorganizer.api.card.subtype.entity.SubtypeEntity;
 import com.mtgcollectionorganizer.api.card.subtype.repository.SubtypeEntityRepository;
@@ -20,7 +20,7 @@ public class SubtypeService {
     public List<SubtypeEntity> getSubtypesFromCardDTOTypeLine(final String typeLine) {
         final List<SubtypeEntity> subtypeList = new ArrayList<>();
 
-        if (!Strings.isNullOrEmpty(typeLine)){
+        if (StringUtils.hasLength(typeLine)){
             final String[] split = typeLine.split("—");
 
             if (split.length > 1){
