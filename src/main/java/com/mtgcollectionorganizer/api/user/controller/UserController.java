@@ -41,7 +41,7 @@ public class UserController {
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.CREATED)
     public String login(@RequestBody final UserLoginDTO userLoginDto){
-        return loginService.login(userLoginDto.getUserName(), userLoginDto.getUserName().concat(userLoginDto.getPassword()));
+        return loginService.login(userLoginDto.getUserName(), userLoginDto.getPassword());
     }
 
     @GetMapping("/getUserByToken")
