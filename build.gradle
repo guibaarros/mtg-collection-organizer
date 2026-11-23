@@ -33,6 +33,7 @@ dependencies {
 
 	// spring security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.bouncycastle:bcprov-jdk18on:1.86'
 	implementation 'com.auth0:java-jwt:4.6.2'
 
 	// database
