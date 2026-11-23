@@ -159,4 +159,53 @@ public class CardEntityBuilderTest {
         verify(subtypeService, times(1)).getSubtypesFromCardDTOTypeLine(eq(cardDTO.getTypeLine()));
         verify(objectMapper, times(1)).writeValueAsString(eq(cardDTO.getImageUris()));
     }
+
+    @Test
+    @DisplayName("printedName e printedText ausentes devem usar name e oracleText")
+    void shouldFallbackToNameAndOracleText() throws Exception {
+        final ScryfallCardDTO cardDTO = ScryfallCardDTO.builder()
+                .collectorNumber("149")
+                .name("Chandra, Dressed to Kill")
+                .oracleText("Texto original")
+                .rarity("mythic")
+                .imageUris(Map.of())
+                .relatedUris(Map.of())
+                .colors(List.of("R"))
+                .colorIdentity(List.of("R"))
+                .build();
+
+        when(setService.getSetByCode("vow")).thenReturn(SetEntity.builder().code("vow").build());
+        when(typeService.getTypesFromCardDTOTypeLine(null)).thenReturn(Collections.emptyList());
+        when(subtypeService.getSubtypesFromCardDTOTypeLine(null)).thenReturn(Collections.emptyList());
+        when(objectMapper.writeValueAsString(cardDTO.getImageUris())).thenReturn("{}");
+
+        final CardEntity card = cardEntityBuilder.build(cardDTO, "vow", LanguageEnum.EN);
+
+        Assertions.assertEquals("Chandra, Dressed to Kill", card.getPrintedName());
+        Assertions.assertEquals("Texto original", card.getPrintedText());
+        Assertions.assertEquals("R", card.getColors());
+    }
+
+    @Test
+    @DisplayName("falha ao serializar image_uris deve gerar string vazia")
+    void shouldReturnEmptyImageUrisWhenSerializationFails() throws Exception {
+        final ScryfallCardDTO cardDTO = ScryfallCardDTO.builder()
+                .collectorNumber("149")
+                .name("Chandra")
+                .rarity("mythic")
+                .imageUris(Map.of("small", "url"))
+                .relatedUris(Map.of())
+                .colors(List.of("R"))
+                .colorIdentity(List.of("R"))
+                .build();
+        final tools.jackson.core.JacksonException exception =
+                org.mockito.Mockito.mock(tools.jackson.core.JacksonException.class);
+
+        when(setService.getSetByCode("vow")).thenReturn(SetEntity.builder().code("vow").build());
+        when(typeService.getTypesFromCardDTOTypeLine(null)).thenReturn(Collections.emptyList());
+        when(subtypeService.getSubtypesFromCardDTOTypeLine(null)).thenReturn(Collections.emptyList());
+        when(objectMapper.writeValueAsString(cardDTO.getImageUris())).thenThrow(exception);
+
+        Assertions.assertEquals("", cardEntityBuilder.build(cardDTO, "vow", LanguageEnum.EN).getImageUris());
+    }
 }

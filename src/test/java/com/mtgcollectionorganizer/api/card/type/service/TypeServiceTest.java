@@ -4,6 +4,7 @@ import com.mtgcollectionorganizer.api.card.type.builder.TypeEntityBuilder;
 import com.mtgcollectionorganizer.api.card.type.entity.TypeEntity;
 import com.mtgcollectionorganizer.api.card.type.repository.TypeEntityRepository;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,6 +24,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -70,6 +72,16 @@ public class TypeServiceTest {
         assertArrayEquals(Collections.emptyList().toArray(), actualTypeEntityList.toArray());
         verify(typeEntityBuilder, times(0)).build(anyString());
         verify(typeEntityRepository, times(0)).findByName(anyString());
+    }
+
+    @Test
+    @DisplayName("tipo já cadastrado deve ser reutilizado em vez de recriado")
+    void shouldReuseExistingType() {
+        final TypeEntity creature = TypeEntity.builder().name("Creature").build();
+        when(typeEntityRepository.findByName("Creature")).thenReturn(Optional.of(creature));
+
+        assertEquals(List.of(creature), typeService.getTypesFromCardDTOTypeLine("Creature — Human"));
+        verify(typeEntityBuilder, times(0)).build(anyString());
     }
 
     static class TypeEntityListArgumentProvider implements ArgumentsProvider {

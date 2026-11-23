@@ -168,4 +168,34 @@ public class CardServiceTest {
         verify(cardEntityBuilder, times(1)).build(eq(cardDTO), eq(setCode), eq(language));
         verify(cardEntityRepository, times(1)).save(eq(expectedCardEntity));
     }
+
+    @Test
+    @DisplayName("cache hit não deve consultar a Scryfall nem salvar novamente")
+    void shouldReturnCachedCardWithoutCallingScryfall() {
+        final String setCode = "vow";
+        final Integer collectorNumber = 149;
+        final LanguageEnum language = LanguageEnum.EN;
+        final CardEntity cachedCard = CardEntity.builder()
+                .id("681f7c73-92c6-47ba-af56-3ff032ac12da")
+                .collectorNumber(collectorNumber)
+                .language(language)
+                .build();
+
+        when(cardEntityRepository.findBySetCodeAndCollectorNumber(setCode, collectorNumber, language))
+                .thenReturn(Optional.of(cachedCard));
+
+        Assertions.assertEquals(cachedCard, cardService.getBySetCodeAndCollectorNumber(setCode, collectorNumber, language));
+
+        verify(scryfallCardService, times(0)).getCardBySetCodeAndCollectorNumber(
+                org.mockito.ArgumentMatchers.anyString(),
+                org.mockito.ArgumentMatchers.anyInt(),
+                org.mockito.ArgumentMatchers.anyString()
+        );
+        verify(cardEntityBuilder, times(0)).build(
+                org.mockito.ArgumentMatchers.any(),
+                org.mockito.ArgumentMatchers.anyString(),
+                org.mockito.ArgumentMatchers.any()
+        );
+        verify(cardEntityRepository, times(0)).save(org.mockito.ArgumentMatchers.any());
+    }
 }
