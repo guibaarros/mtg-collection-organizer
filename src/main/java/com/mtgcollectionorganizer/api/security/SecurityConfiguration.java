@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(jsr250Enabled = true)
+@EnableMethodSecurity(jsr250Enabled = true)
 @AllArgsConstructor
 public class SecurityConfiguration {
 
@@ -25,18 +25,21 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().authorizeHttpRequests()
-                .antMatchers(HttpMethod.POST, "/user/login")
-                .permitAll()
-                .antMatchers(HttpMethod.POST, "/user")
-                .permitAll()
-                .anyRequest().authenticated()
-                .and().addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+        return httpSecurity
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/user/login", "/user").permitAll()
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager

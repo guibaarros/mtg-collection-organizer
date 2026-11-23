@@ -1,7 +1,6 @@
 package com.mtgcollectionorganizer.api.card.builder;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.mtgcollectionorganizer.api.card.entity.CardEntity;
 import com.mtgcollectionorganizer.api.card.entity.RarityEnum;
 import com.mtgcollectionorganizer.api.card.set.entity.SetEntity;
@@ -18,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +29,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 public class CardEntityBuilderTest {
 
     @Mock
@@ -50,7 +49,7 @@ public class CardEntityBuilderTest {
 
     @Test
     @DisplayName("Test CardEntityBuilder.build()")
-    void testBuild() throws JsonProcessingException {
+    void testBuild() {
         final String setCode = "vow";
         final LanguageEnum language = LanguageEnum.EN;
         final SetEntity expectedSetEntity = SetEntity

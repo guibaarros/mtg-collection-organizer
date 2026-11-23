@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,11 +24,12 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 public class SubtypeServiceTest {
 
     @Mock
@@ -44,7 +45,7 @@ public class SubtypeServiceTest {
     @ArgumentsSource(SubtypeEntityListArgumentProvider.class)
     @DisplayName("Test SubtypeService.getSubtypesFromCardDTOTypeLine() with valid values")
     void testGetSubtypesFromCardDTOTypeLine(final String typeLine, final List<SubtypeEntity> expectedSubtypeEntityList){
-        when(subtypeEntityBuilder.build(anyString()))
+        lenient().when(subtypeEntityBuilder.build(anyString()))
                 .thenAnswer(a ->
                         SubtypeEntity.builder()
                                 .id(UUID.randomUUID().toString())
@@ -52,7 +53,7 @@ public class SubtypeServiceTest {
                                 .build()
                 );
 
-        when(subtypeEntityRepository.findByName(anyString())).thenReturn(Optional.empty());
+        lenient().when(subtypeEntityRepository.findByName(anyString())).thenReturn(Optional.empty());
 
         final List<SubtypeEntity> actualSubtypeEntityList = subtypeService.getSubtypesFromCardDTOTypeLine(typeLine);
 
