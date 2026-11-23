@@ -2,13 +2,14 @@ package com.mtgcollectionorganizer.api.scryfall.card.service;
 
 import com.mtgcollectionorganizer.api.scryfall.card.client.ScryfallCardClient;
 import com.mtgcollectionorganizer.api.scryfall.card.dto.ScryfallCardDTO;
+import feign.FeignException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.Map;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 public class ScryfallCardServiceTest {
 
     @Mock
@@ -77,5 +78,18 @@ public class ScryfallCardServiceTest {
         Assertions.assertEquals(expectedScryfallCardDTO, actualCardBySetCodeAndCollectorNumber);
     }
 
-    //TODO adicionar cenario de card nao encontrado no scryfall
+    @Test
+    @DisplayName("deve propagar FeignException quando o card não existe na Scryfall")
+    void shouldPropagateNotFoundFromScryfall() {
+        final FeignException.NotFound exception = org.mockito.Mockito.mock(FeignException.NotFound.class);
+        when(cardClient.getCardBySetCodeAndCollectorNumber("vow", 9999, "pt"))
+                .thenThrow(exception);
+
+        final FeignException.NotFound thrown = Assertions.assertThrows(
+                FeignException.NotFound.class,
+                () -> cardService.getCardBySetCodeAndCollectorNumber("vow", 9999, "pt")
+        );
+
+        Assertions.assertSame(exception, thrown);
+    }
 }

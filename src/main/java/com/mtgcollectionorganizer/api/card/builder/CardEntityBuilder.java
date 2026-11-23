@@ -1,7 +1,7 @@
 package com.mtgcollectionorganizer.api.card.builder;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import com.mtgcollectionorganizer.api.card.entity.CardEntity;
 import com.mtgcollectionorganizer.api.card.entity.RarityEnum;
 import com.mtgcollectionorganizer.api.card.set.service.SetService;
@@ -50,7 +50,7 @@ public class CardEntityBuilder {
     private String getImageUris(final ScryfallCardDTO cardDTO) {
         try {
             return objectMapper.writeValueAsString(cardDTO.getImageUris());
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             e.printStackTrace();
         }
         return "";

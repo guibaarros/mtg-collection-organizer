@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 public class SetServiceTest {
 
     @Mock
@@ -74,7 +74,7 @@ public class SetServiceTest {
 
         final SetEntity expectedSetEntity = getSetEntity(setCode);
 
-        when(setEntityRepository.findByCode(eq(setCode))).thenReturn(Optional.of(expectedSetEntity));
+        when(setEntityRepository.findByCode(eq(setCode))).thenReturn(Optional.empty());
         when(scryfallSetService.getSetByCode(eq(setCode))).thenReturn(setDTO);
         when(setEntityBuilder.build(eq(setDTO))).thenReturn(expectedSetEntity);
 

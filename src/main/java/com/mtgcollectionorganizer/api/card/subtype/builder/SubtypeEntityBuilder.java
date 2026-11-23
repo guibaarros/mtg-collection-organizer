@@ -1,6 +1,6 @@
 package com.mtgcollectionorganizer.api.card.subtype.builder;
 
-import com.google.common.base.Strings;
+import org.springframework.util.StringUtils;
 import com.mtgcollectionorganizer.api.card.subtype.builder.exception.InvalidSubtypeNameException;
 import com.mtgcollectionorganizer.api.card.subtype.entity.SubtypeEntity;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import java.util.UUID;
 public class SubtypeEntityBuilder {
 
     public SubtypeEntity build(final String name){
-        if (Strings.isNullOrEmpty(name)){
+        if (!StringUtils.hasLength(name)){
             throw new InvalidSubtypeNameException("name can not be null or empty");
         }
         return SubtypeEntity.builder()
