@@ -2,7 +2,6 @@ plugins {
 	id 'org.springframework.boot' version '4.2.0'
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'java'
-	id "org.sonarqube" version "7.6.0.18749"
 }
 
 group = 'com.mtgcollectionorganizer'
@@ -62,15 +61,6 @@ dependencies {
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
-}
-
-sonar {
-	properties {
-		property "sonar.projectKey", "guibaarros_mtg-collection-organizer"
-		property "sonar.organization", "guibaarros"
-		property "sonar.host.url", "https://sonarcloud.io"
-		property "sonar.exclusions", "src/main/java/com/mtgcollectionorganizer/api/MtgCollectionOrganizerApiModuleApplication.java"
 	}
 }
 
