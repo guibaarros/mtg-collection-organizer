@@ -5,8 +5,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.ToString;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,6 +19,7 @@ import jakarta.persistence.Table;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
+@ToString
 public class SetEntity {
 
     @Id
@@ -43,9 +43,4 @@ public class SetEntity {
 
     @Column(name="card_count")
     private Integer cardCount;
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
-    }
 }

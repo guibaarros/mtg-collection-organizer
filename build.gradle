@@ -49,9 +49,6 @@ dependencies {
 	// open feign
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
-	// commons lang 3
-	implementation 'org.apache.commons:commons-lang3:3.22.0'
-
 	// spring test
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'

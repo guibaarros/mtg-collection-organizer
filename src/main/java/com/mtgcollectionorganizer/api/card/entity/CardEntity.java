@@ -9,8 +9,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.ToString;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -33,6 +32,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
+@ToString
 public class CardEntity {
 
     @Id
@@ -41,6 +41,7 @@ public class CardEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="set_id", nullable = false, foreignKey = @ForeignKey(name = "fk_card_set_id"))
+    @ToString.Exclude
     private SetEntity set; //varchar [ref:> sets.id]
 
     @Column(name = "collector_number")
@@ -93,6 +94,7 @@ public class CardEntity {
             joinColumns = @JoinColumn(name = "card_id", foreignKey = @ForeignKey(name = "fk_card_types_card_id")),
             inverseJoinColumns = @JoinColumn(name = "type_id", foreignKey = @ForeignKey(name = "fk_card_types_type_id"))
     )
+    @ToString.Exclude
     private List<TypeEntity> types; //many to many
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -101,10 +103,6 @@ public class CardEntity {
             joinColumns = @JoinColumn(name = "card_id", foreignKey = @ForeignKey(name = "fk_card_subtypes_card_id")),
             inverseJoinColumns = @JoinColumn(name = "subtype_id", foreignKey = @ForeignKey(name = "fk_card_subtypes_subtype_id"))
     )
+    @ToString.Exclude
     private List<SubtypeEntity> subtypes;//many to many
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
-    }
 }
