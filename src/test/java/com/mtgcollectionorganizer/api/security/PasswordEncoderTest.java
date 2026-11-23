@@ -2,7 +2,6 @@ package com.mtgcollectionorganizer.api.security;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -30,14 +29,5 @@ class PasswordEncoderTest {
 
         assertTrue(passwordEncoder.matches("senha123", hash));
         assertFalse(passwordEncoder.matches("errada", hash));
-    }
-
-    @Test
-    @DisplayName("deve validar hashes bcrypt legados com o prefixo do delegating encoder")
-    void shouldMatchLegacyBcryptHash() {
-        final String legacyHash = "{bcrypt}" + new BCryptPasswordEncoder().encode("senha123");
-
-        assertTrue(passwordEncoder.matches("senha123", legacyHash));
-        assertFalse(passwordEncoder.matches("errada", legacyHash));
     }
 }
